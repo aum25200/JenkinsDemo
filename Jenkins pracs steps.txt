@@ -1,0 +1,450 @@
+
+
+# Practical: Configure a Jenkins Job Tracking External Repository Data with Automated Triggers
+
+## Aim
+
+To configure a Jenkins job that tracks an external GitHub repository and automatically executes using:
+
+1. Scheduled trigger (every minute)
+2. Source code change detection (Poll SCM/GitHub commits)
+
+---
+
+# Step 1: Install Prerequisites
+
+## Install Java
+
+Open Command Prompt:
+
+```cmd
+java -version
+```
+
+If Java is not installed:
+
+1. Download OpenJDK 17 from:
+   [Eclipse Adoptium](https://adoptium.net/?utm_source=chatgpt.com)
+2. Install Java.
+3. Verify:
+
+```cmd
+java -version
+```
+
+---
+
+# Step 2: Install Jenkins
+
+1. Download Jenkins MSI:
+   [Jenkins Downloads](https://www.jenkins.io/download/?utm_source=chatgpt.com)
+
+2. Run the installer.
+
+3. After installation, open:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# Step 3: Unlock Jenkins
+
+Get the initial password:
+
+```text
+C:\ProgramData\Jenkins\secrets\initialAdminPassword
+```
+
+Paste it into Jenkins.
+
+Select:
+
+```text
+Install Suggested Plugins
+```
+
+Create a new admin user.
+
+---
+
+# Step 4: Install Git
+
+Download Git:
+
+[Git for Windows](https://git-scm.com/download/win?utm_source=chatgpt.com)
+
+Verify:
+
+```cmd
+git --version
+```
+
+---
+
+# Step 5: Create GitHub Repository
+
+Go to:
+
+[GitHub](https://github.com?utm_source=chatgpt.com)
+
+Create repository:
+
+```text
+JenkinsDemo
+```
+
+Add README.md
+
+Repository URL example:
+
+```text
+https://github.com/username/JenkinsDemo.git
+```
+
+---
+
+# Step 6: Create Jenkins Freestyle Project
+
+Jenkins Dashboard
+
+↓
+
+New Item
+
+↓
+
+Enter:
+
+```text
+GitHub-AutoBuild
+```
+
+↓
+
+Select:
+
+```text
+Freestyle Project
+```
+
+↓
+
+OK
+
+---
+
+# Step 7: Configure Git Repository
+
+Inside Job Configuration
+
+### Source Code Management
+
+Select:
+
+```text
+Git
+```
+
+Repository URL:
+
+```text
+https://github.com/username/JenkinsDemo.git
+```
+
+Replace username with your GitHub username.
+
+---
+
+# Step 8: Configure Build Trigger (Every Minute)
+
+Scroll to:
+
+### Build Triggers
+
+Enable:
+
+```text
+Build periodically
+```
+
+Schedule:
+
+```text
+* * * * *
+```
+
+Meaning:
+
+```text
+Run every minute
+```
+
+---
+
+# Step 9: Add Build Step
+
+Scroll to:
+
+### Build
+
+↓
+
+Add Build Step
+
+↓
+
+Execute Windows Batch Command
+
+Enter:
+
+```cmd
+echo Jenkins Job Executed
+date /t
+time /t
+```
+
+Save.
+
+---
+
+# Step 10: Verify Scheduled Trigger
+
+Open:
+
+```text
+Build History
+```
+
+Wait one minute.
+
+Builds should appear:
+
+```text
+#1
+#2
+#3
+```
+
+Open a build.
+
+↓
+
+Console Output
+
+Expected:
+
+```text
+Jenkins Job Executed
+Date:
+Time:
+```
+
+---
+
+# Step 11: Configure GitHub Commit Tracking
+
+Open Job
+
+↓
+
+Configure
+
+↓
+
+Build Triggers
+
+Enable:
+
+```text
+Poll SCM
+```
+
+Schedule:
+
+```text
+* * * * *
+```
+
+Meaning:
+
+```text
+Check GitHub every minute
+```
+
+If a new commit exists:
+
+```text
+Automatically trigger build
+```
+
+Save.
+
+---
+
+# Step 12: Test Poll SCM
+
+Clone repository:
+
+```cmd
+git clone https://github.com/username/JenkinsDemo.git
+```
+
+Enter repository:
+
+```cmd
+cd JenkinsDemo
+```
+
+Modify README.md
+
+Commit changes:
+
+```cmd
+git add .
+git commit -m "Testing Jenkins Trigger"
+git push origin main
+```
+
+Within one minute Jenkins should automatically start a build.
+
+---
+
+# Step 13: Verify Build
+
+Open:
+
+```text
+Build History
+```
+
+New build should appear.
+
+Open:
+
+```text
+Console Output
+```
+
+You should see:
+
+```text
+Started by SCM change
+```
+
+or
+
+```text
+Started by timer
+```
+
+---
+
+# Optional: Real-Time GitHub Webhook Trigger
+
+Install plugin:
+
+```text
+Manage Jenkins
+→ Plugins
+→ Available Plugins
+→ GitHub Integration Plugin
+```
+
+Restart Jenkins.
+
+Configure Job:
+
+Enable:
+
+```text
+GitHub hook trigger for GITScm polling
+```
+
+Save.
+
+---
+
+## GitHub Webhook Configuration
+
+GitHub Repository
+
+↓
+
+Settings
+
+↓
+
+Webhooks
+
+↓
+
+Add Webhook
+
+Payload URL:
+
+```text
+http://YOUR-IP:8080/github-webhook/
+```
+
+Content Type:
+
+```text
+application/json
+```
+
+Select:
+
+```text
+Just the push event
+```
+
+Save.
+
+Now every GitHub push triggers Jenkins immediately.
+
+---
+
+# Result
+
+**Successfully created a Jenkins Freestyle Project connected to a GitHub repository and configured automated triggers using both scheduled execution (every minute) and source code change detection (Poll SCM/Webhook). The job executed automatically whenever the configured trigger conditions were met.**
+
+Aim: To configure a Jenkins job that tracks an external GitHub repository and executes automatically using scheduled and SCM-based triggers.
+
+Procedure:
+
+1. Installed and configured Jenkins.
+2. Created a GitHub repository named JenkinsDemo1.
+3. Created a Jenkins Freestyle Project named GitHub-AutoBuild.
+4. Configured Git SCM with the repository URL.
+5. Enabled Build Periodically trigger using the cron expression * * * * *.
+6. Added a batch command build step.
+7. Executed the job successfully.
+8. Configured Poll SCM to monitor repository changes.
+9. Verified automatic build execution on code updates.
+
+Result:
+The Jenkins job successfully tracked the external GitHub repository and executed automatically through scheduled triggers and source code change detection.
+
+### Viva Questions
+
+**What is Jenkins?**
+
+> Jenkins is an open-source automation server used for Continuous Integration and Continuous Deployment (CI/CD).
+
+**What is Poll SCM?**
+
+> Poll SCM periodically checks the source code repository for changes and triggers a build when changes are detected.
+
+**What does `* * * * *` mean?**
+
+> Execute the job every minute.
+
+**What is a Webhook?**
+
+> A webhook sends an immediate notification from GitHub to Jenkins when a code push occurs.
+
+**What is SCM?**
+
+> Source Code Management, such as GitHub repositories used to store source code.
