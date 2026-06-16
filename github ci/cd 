@@ -1,0 +1,90 @@
+Aim: Using GitLab Web IDE.
+PART 1 — Create GitLab Account
+PART 2 — Create Group
+Step 1-Groups → Create group
+Step 2-Enter: Group Name: nmitdRutik
+Step 3-Create GroupPART 3 — Create Project
+Step 1- Click:Projects → Create blank project
+Step 2-Enter Project name: nmitdRutikPro
+Select group- nmitdRutik under Project URL.
+Step 3-Create ProjectPART 4 — Open GitLab Web IDE
+Step 1-Inside project click: Web IDE OR Edit → Open in Web IDE
+PART 5 — Create .gitlab-ci.yml
+Step 1- Click-New File
+Step 2- File name: .gitlab-ci.yml
+Step 3- Add this content:
+job1:
+ script:
+ - echo "Hello Rutik from GitLab CI"
+Step 4- Click Commit Changes
+Add commit message: Initial CI PipelinePART 6 — Check Pipeline StatusPART 7 — Add Multiple Jobs
+Step 1- Open .gitlab-ci.yml
+Step 2
+Replace with:
+job1:
+ script:
+ - echo "This is Job 1"
+job2:
+ script:
+ - echo "This is Job 2"
+job3:
+ script:
+ - echo "This is Job 3"Step 3- Commit ChangesPART 8 — Add Stages
+Step 1- Update .gitlab-ci.yml
+stages:
+ - build
+ - test
+ - deploy
+job1:
+ stage: build
+ script:
+ - echo "Build Stage"
+job2:
+ stage: test
+ script:
+ - echo "Testing Stage"
+job3:
+ stage: deploy
+script:
+ - echo "Deploy Stage"
+Step 2- Commit Changes.PART 9 — Add before_script and after_script
+Step 1- Update .gitlab-ci.yml
+before_script:
+ - echo "Before Script Running"
+after_script:
+ - echo "After Script Running"
+job1:
+ script:
+ - echo "Main Job Execution"
+Step 2- Commit Changes.PART 10 — Create Bash Script
+Step 1- Create new file:
+try.sh
+Step 2- Add content:
+#!/bin/bash
+echo "This is Bash Script"
+pwd
+ls
+Step 3- Commit Changes.PART 11 — Execute Bash Script
+Step 1- Update .gitlab-ci.yml
+job1:
+ script:
+ - chmod +x try.sh
+ - ./try.shStep 2
+- Commit Changes.PART 12 — Artifacts and Paths
+Step 1- Update .gitlab-ci.yml
+job1:
+ script:mkdir myfolder
+ - echo "Artifact File" > myfolder/output.txt
+ artifacts:
+ paths:
+ - myfolder/Step 2- Commit ChangesStep 3- After pipeline success:
+• open job 
+• right side → ArtifactsPART 13 — Run Pipeline Manually
+Step 1- Go to: Build → Pipelines
+Step 2- Click : Run PipelinePART 14 — Schedule Pipeline
+Step 1-Go to:
+Build → Pipeline Schedules
+Step 2- Click: New ScheduleStep 3- Set:
+• date 
+• time 
+• branch.Step 4- Save schedule.Part 15- Create Project to deal with HelloWorld.java
